@@ -28,11 +28,9 @@ metadata:
   labels:
     app: shoes
 spec:
-  type: LoadBalancer
   selector:
     app: shoes
   ports:
     - protocol: TCP
       port: 80
       targetPort: 1002
-      nodePort: 30008

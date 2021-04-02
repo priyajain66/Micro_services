@@ -28,11 +28,9 @@ metadata:
   labels:
     app: offers
 spec:
-  type: LoadBalancer
   selector:
     app: offers
   ports:
     - protocol: TCP
       port: 80
       targetPort: 1001
-      nodePort: 30007
