@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: offers-deployment
+  labels:
+    app: offers
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: offers
+  template:
+    metadata:
+      labels:
+        app: offers
+    spec:
+      containers:
+      - name: offers
+        image: docker.io/aricentdocker/offers:3
+        ports:
+        - containerPort: 80
