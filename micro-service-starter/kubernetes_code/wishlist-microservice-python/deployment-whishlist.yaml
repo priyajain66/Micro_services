@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wishlist-deployment
+  labels:
+    app: wishlist
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wishlist
+  template:
+    metadata:
+      labels:
+        app: wishlist
+    spec:
+      containers:
+      - name: wishlist
+        image: docker.io/aricentdocker/wishlist:3
+        ports:
+        - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wishlist-service
+  labels:
+    app: wishlist
+spec:
+  type: LoadBalancer
+  selector:
+    app: wishlist
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 1003
+      nodePort: 30009

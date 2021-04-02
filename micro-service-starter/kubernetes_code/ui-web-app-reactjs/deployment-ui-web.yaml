@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ui-web-deployment
+  labels:
+    app: ui-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ui-web
+  template:
+    metadata:
+      labels:
+        app: ui-web
+    spec:
+      containers:
+      - name: ui-web
+        image: docker.io/aricentdocker/ui-web:3
+        ports:
+        - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ui-web-service
+  labels:
+    app: ui-web
+spec:
+  type: LoadBalancer
+  selector:
+    app: ui-web
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+      nodePort: 30011

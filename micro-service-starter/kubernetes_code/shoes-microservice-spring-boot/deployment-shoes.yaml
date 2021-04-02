@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shoes-deployment
+  labels:
+    app: shoes
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: shoes
+  template:
+    metadata:
+      labels:
+        app: shoes
+    spec:
+      containers:
+      - name: shoes
+        image: docker.io/aricentdocker/shoes:1
+        ports:
+        - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: shoes-service
+  labels:
+    app: shoes
+spec:
+  type: LoadBalancer
+  selector:
+    app: shoes
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 1002
+      nodePort: 30008
