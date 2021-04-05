@@ -1,24 +1,33 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ui-web-deployment
+  name: ui-deployment
   labels:
-    app: ui-web
+    app: ui
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: ui-web
+      app: ui
   template:
     metadata:
       labels:
-        app: ui-web
+        app: ui
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes-training
+                operator: In
+                values:
+                - success
       containers:
-      - name: ui-web
-        image: docker.io/aricentdocker/ui-web:3
+      - name: ui
+        image: docker.io/aricentdocker/ui:4
         ports:
-        - containerPort: 80
+        - containerPort: 8080
 
 ---
 apiVersion: v1
@@ -26,13 +35,12 @@ kind: Service
 metadata:
   name: ui-web-service
   labels:
-    app: ui-web
+    app: ui
 spec:
   type: LoadBalancer
   selector:
-    app: ui-web
+    app: ui
   ports:
     - protocol: TCP
-      port: 80
+      port: 8080
       targetPort: 8080
-      nodePort: 30011

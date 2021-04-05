@@ -16,23 +16,20 @@ spec:
     spec:
       containers:
       - name: wishlist
-        image: docker.io/aricentdocker/wishlist:3
+        image: docker.io/aricentdocker/wishlist:5
         ports:
-        - containerPort: 80
-
+        - containerPort: 5000
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: wishlist-service
+  name: wishlist
   labels:
     app: wishlist
 spec:
-  type: LoadBalancer
   selector:
     app: wishlist
   ports:
     - protocol: TCP
-      port: 80
-      targetPort: 1003
-      nodePort: 30009
+      port: 5000
+      targetPort: 5000

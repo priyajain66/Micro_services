@@ -8,40 +8,41 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: zuul
+     app: zuul
   template:
     metadata:
       labels:
         app: zuul
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes-training
+                operator: In
+                values:
+                  - success
       containers:
       - name: zuul
         image: docker.io/aricentdocker/zuul:1
         ports:
-        - containerPort: 80
+        - containerPort: 9999
+          
+---          
 
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: v1
+kind: Service
 metadata:
   name: zuul-api-gateway-service
+  labels:
+    app: zuul
 spec:
-  rules:
-  -  http:
-       paths:
-       -  path: /offer/**
-            backend:
-                service:
-                    name: offers-service
-                    port:
-                      number: 80
-  -  http:
-       paths:
-       -  path: /shoe/**
-            backend:
-                service:
-                    name: shoes-service
-                    port:
-                      number: 80
-         
-         
+  type: NodePort
+  selector:
+    app: zuul
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 9999
+      nodePort: 30007

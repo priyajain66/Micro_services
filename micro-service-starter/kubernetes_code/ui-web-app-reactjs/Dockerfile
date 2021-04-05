@@ -14,4 +14,5 @@ RUN npm install
 
 # Bundle app source
 COPY . .
+RUN npm run build
 CMD [ "node", "server.js" ]
